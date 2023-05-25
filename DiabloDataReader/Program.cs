@@ -12,17 +12,18 @@ if (arguments.Count is 0)
     Console.WriteLine("Указаны не правильные пути файлов");
     return;
 }
+
+JsonConverter jsonConverter = new();
+Io io = new();
 foreach (string path in arguments)
 {
     Console.WriteLine($"File: {path}");
-    BytesHandler bytes = new(File.ReadAllBytes(path));
+    BytesStl bytes = new(File.ReadAllBytes(path));
     Stl stl = new(bytes);
     stl.GetInfo();
-    foreach ((string key, string value) in stl.Blocks)
-    {
-        Console.WriteLine($"{key}\t{value}");
-    }
-
+    string json = jsonConverter.Serialize(stl.Blocks);
+    Console.WriteLine(json);
+    io.Writer(path.Replace(".stl", ".json", StringComparison.OrdinalIgnoreCase), json);
     Console.WriteLine();
 }
 

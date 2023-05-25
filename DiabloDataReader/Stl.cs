@@ -4,36 +4,36 @@ namespace DiabloDataReader;
 
 public class Stl
 {
-    private readonly BytesHandler _bytesHandler;
+    private readonly BytesStl _bytesStl;
     public List<KeyValuePair<string, string>> Blocks { get; private set; }
 
-    public Stl(BytesHandler bytes)
+    public Stl(BytesStl bytes)
     {
-        _bytesHandler = bytes;
+        _bytesStl = bytes;
         Blocks = new();
     }
-
+    
     public void GetInfo()
     {
-        for (int i = 0; i < _bytesHandler.CountBlocks; i++)
+        for (int i = 0; i < _bytesStl.CountBlocks; i++)
         {
             AddBlockInfo();
-            _bytesHandler.NextBlock();
+            _bytesStl.NextBlock(StlConstants.PairSize);
         }
     }
 
     private void AddBlockInfo()
     {
-        string key = GetLine(_bytesHandler.BlockKeyOffset, _bytesHandler.BlockKeyLength);
-        string value = GetLine(_bytesHandler.BlockValueOffset, _bytesHandler.BlockValueLength);
+        string key = GetLine(_bytesStl.BlockKeyOffset, _bytesStl.BlockKeyLength);
+        string value = GetLine(_bytesStl.BlockValueOffset, _bytesStl.BlockValueLength);
         Blocks.Add(new KeyValuePair<string, string>(key, value));
     }
 
     private string GetLine(ReadOnlySpan<byte> offset, ReadOnlySpan<byte> length)
     {
-        int offSet = _bytesHandler.ToInt(offset) + StlConstants.Offset;
-        int len = _bytesHandler.ToInt(length);
-        ReadOnlySpan<byte> bytes = _bytesHandler[offSet, offSet + len];
+        uint offSet = _bytesStl.ToUint(offset) + StlConstants.Offset;
+        uint len = _bytesStl.ToUint(length);
+        ReadOnlySpan<byte> bytes = _bytesStl[offSet, offSet + len];
         string line = Encoding.UTF8.GetString(bytes);
         return line.Replace("\u0000", string.Empty);
     }

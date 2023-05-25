@@ -1,51 +1,42 @@
-﻿using static DiabloDataReader.StlConstants;
+﻿namespace DiabloDataReader;
 
-namespace DiabloDataReader;
-
-public class BytesHandler
+public abstract class BytesHandler
 {
     private readonly byte[] _bytes;
-    private int _offsetBlock;
+    protected uint OffsetBlock;
 
-    public ReadOnlySpan<byte> this[int start = -1, int end = -1]
+    public ReadOnlySpan<byte> this[uint start, uint end = 0]
     => (start, end) switch
     {
-        ( >= 0, >= 0) => start <= end ? _bytes[start..end] : _bytes[end..start],
-        ( >= 0, < 0) => _bytes[start..],
-        ( < 0, > 0) => _bytes[..end],
+        ( > 0, > 0) => start <= end ? _bytes[(int)start..(int)end] : _bytes[(int)end..(int)start],
+        ( > 0, _) => _bytes[(int)start..],
+        (_, > 0) => _bytes[..(int)end],
         _ => _bytes
     };
 
-    #region Header
-    public ReadOnlySpan<byte> HeaderGameLink => this[HeaderGameLinkStart, HeaderGameLinkEnd];
-    public ReadOnlySpan<byte> HeaderFileType => this[HeaderFileTypeStart, HeaderFileTypeEnd];
-    public ReadOnlySpan<byte> HeaderFileTypePadding => this[HeaderFileTypePaddingStart, HeaderFileTypePaddingEnd];
-    public ReadOnlySpan<byte> HeaderUnknownFirst => this[HeaderUnknownFirstStart, HeaderUnknownFirstEnd];
-    public ReadOnlySpan<byte> HeaderHashId => this[HeaderHashIdStart, HeaderHashIdEnd];
-    public ReadOnlySpan<byte> HeaderHashIdPadding => this[HeaderHashIdPaddingStart, HeaderHashIdPaddingEnd];
-    public ReadOnlySpan<byte> HeaderUnknownSecond => this[HeaderUnknownSecondStart, HeaderUnknownSecondEnd];
-    public ReadOnlySpan<byte> HeaderInfoLength => this[HeaderInfoLengthStart, HeaderInfoLengthEnd];
-    public ReadOnlySpan<byte> HeaderInfoLengthPadding => this[HeaderInfoLengthPaddingStart, HeaderInfoLengthPaddingEnd];
-    #endregion
-
-    #region Block
-    public ReadOnlySpan<byte> BlockDelimiterFirst => this[_offsetBlock + BlockDelimiterFirstStart, _offsetBlock + BlockDelimiterFirstEnd];
-    public ReadOnlySpan<byte> BlockKeyOffset => this[_offsetBlock + BlockKeyOffsetStart, _offsetBlock + BlockKeyOffsetEnd];
-    public ReadOnlySpan<byte> BlockKeyLength => this[_offsetBlock + BlockKeyLengthStart, _offsetBlock + BlockKeyLengthEnd];
-    public ReadOnlySpan<byte> BlockDelimiterSecond => this[_offsetBlock + BlockDelimiterSecondStart, _offsetBlock + BlockDelimiterSecondEnd];
-    public ReadOnlySpan<byte> BlockValueOffset => this[_offsetBlock + BlockValueOffsetStart, _offsetBlock + BlockValueOffsetEnd];
-    public ReadOnlySpan<byte> BlockValueLength => this[_offsetBlock + BlockValueLengthStart, _offsetBlock + BlockValueLengthEnd];
-    public ReadOnlySpan<byte> BlockDelimiterLast => this[_offsetBlock + BlockDelimiterLastStart, _offsetBlock + BlockDelimiterLastEnd];
-    #endregion
-
-    public int CountBlocks => ToInt(HeaderInfoLength) / PairSize;
-
-    public BytesHandler(IEnumerable<byte> bytes)
+    protected BytesHandler(IEnumerable<byte> bytes, uint offsetBlock)
     {
         _bytes = bytes.ToArray();
-        _offsetBlock = HeaderSize;
+        OffsetBlock = offsetBlock;
+    }
+    
+    public uint ToUint(ReadOnlySpan<byte> bytes) => BitConverter.ToUInt32(bytes);
+
+    public string ToString(ReadOnlySpan<byte> bytes) => BitConverter.ToString(bytes.ToArray());
+
+    public List<char> ToChars(ReadOnlySpan<byte> bytes)
+    {
+        byte[] bs = bytes.ToArray();
+        List<char> chars = new();
+        for (uint i = 0; i < bs.Length / 2; i++)
+        {
+            chars.Add(ToChar(bs, i * 2));
+        }
+
+        return chars;
     }
 
-    public int ToInt(ReadOnlySpan<byte> bytes) => BitConverter.ToInt32(bytes);
-    public void NextBlock() => _offsetBlock += PairSize;
+    public void NextBlock(uint pairSize) => OffsetBlock += pairSize;
+
+    private char ToChar(ReadOnlySpan<byte> bytes, uint index) => BitConverter.ToChar(bytes.ToArray(), (int)index);
 }
