@@ -2,7 +2,7 @@
 
 For DiabloDataReader.exe ~ 165 KB need install https://dotnet.microsoft.com/en-us/download/dotnet/8.0
 <br/>
-DiabloDataReader.exe ~ 77 MB Autonomous
+DiabloDataReader.exe ~ 16 MB Autonomous
 <br/>
 For view .stl files
 <br/>
