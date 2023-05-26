@@ -1,5 +1,6 @@
 # Diablo IV Data Viewer
-
+Read .Stl
+Read .vid(Base\child\Movie)
 For DiabloDataReader.exe ~ 165 KB need install https://dotnet.microsoft.com/en-us/download/dotnet/8.0
 <br/>
 DiabloDataReader.exe ~ 16 MB Autonomous
