@@ -1,17 +1,26 @@
-# Diablo IV Data Viewer
-Read .Stl
+# <h1>Diablo IV Data Viewer</h1>
 <br/>
-Read .vid(Base\child\Movie) and convert 
+<div>
+Program for further viewing/extraction of files. <br/>
+After you have extracted the files with <br/>
+https://github.com/WoW-Tools/CASCExplorer <br/>
+</div>
 <br/>
-For DiabloDataReader.exe ~ 165 KB need install https://dotnet.microsoft.com/en-us/download/dotnet/8.0
 <br/>
-DiabloDataReader.exe ~ 16 MB Autonomous
+For DiabloIV-DataReader-Short.exe ~ 300 KB need install https://dotnet.microsoft.com/en-us/download/dotnet/8.0
 <br/>
-For run, transfer the .stl file to DiabloDataReader.exe
+DiabloIV-DataReader.exe ~ 19 MB Autonomous
+<br/>
+Supported types: <br/>
+.stl <br/>
+.vid <br/>
+<br/>
+<br/>
+For run, transfer the .type file to DiabloDataReader.exe
 <br/>
 OR
 <br/>
-Run in console or powerShell .\DiabloDataReader.exe name.stl
+Run in console or powerShell .\DiabloDataReader.exe name.type
 <br/>
 
 <img width="864" alt="image" src="https://github.com/Zombach/DiabloDataReader/assets/52016832/5515354c-1c01-4a97-b934-c2880c342b3e">
