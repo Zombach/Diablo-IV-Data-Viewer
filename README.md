@@ -16,11 +16,11 @@ Supported types: <br/>
 .vid <br/>
 <br/>
 <br/>
-For run, transfer the .type file to DiabloDataReader.exe
+For run, transfer the .type file to DiabloIV-DataReader.exe
 <br/>
 OR
 <br/>
-Run in console or powerShell .\DiabloDataReader.exe name.type
+Run in console or powerShell .\DiabloIV-DataReader.exe name.type
 <br/>
 
 <img width="864" alt="image" src="https://github.com/Zombach/DiabloDataReader/assets/52016832/5515354c-1c01-4a97-b934-c2880c342b3e">
