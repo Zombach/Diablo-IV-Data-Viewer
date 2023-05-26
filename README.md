@@ -1,11 +1,11 @@
 # Diablo IV Data Viewer
 Read .Stl
-Read .vid(Base\child\Movie)
+<br/>
+Read .vid(Base\child\Movie) and convert 
+<br/>
 For DiabloDataReader.exe ~ 165 KB need install https://dotnet.microsoft.com/en-us/download/dotnet/8.0
 <br/>
 DiabloDataReader.exe ~ 16 MB Autonomous
-<br/>
-For view .stl files
 <br/>
 For run, transfer the .stl file to DiabloDataReader.exe
 <br/>
